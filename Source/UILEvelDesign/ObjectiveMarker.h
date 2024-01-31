@@ -27,14 +27,18 @@ private:
 	class UBoxComponent* BoxCollider;
 
 	// Properties
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Mark Status", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mark Status", meta = (AllowPrivateAccess = "true"))
 	bool bUseTrigger = true;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Mark Status", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mark Status", meta = (AllowPrivateAccess = "true"))
 	bool bEnable = true;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Mark Status", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mark Status", meta = (AllowPrivateAccess = "true"))
 	bool bDisabledOnReach = true;
+
+	void OnConstruction(const FTransform& Transform) override;
+
+	void ToogleBoxCollider(bool bIsActive);
 	
 public:	
 	// Sets default values for this actor's properties
