@@ -9,7 +9,7 @@
 AObjectiveMarker::AObjectiveMarker()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	// PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true;
 
 	RootScene = CreateDefaultSubobject<USceneComponent>(TEXT("CreatedRoot"));
 	SetRootComponent(RootScene);
@@ -45,7 +45,14 @@ void AObjectiveMarker::ToogleBoxCollider(bool bIsActive)
 		return;
 	}
 
-	BoxCollider->SetActive(bIsActive);
+	if (bIsActive)
+	{
+		BoxCollider->SetCollisionProfileName(FName(TEXT("OverlapAllDynamic")));
+	}
+	else
+	{
+		BoxCollider->SetCollisionProfileName(FName(TEXT("NoCollision")));
+	}
 }
 
 // Called when the game starts or when spawned
@@ -53,6 +60,39 @@ void AObjectiveMarker::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (BoxCollider != nullptr)
+	{
+		BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AObjectiveMarker::ManageMarkerTrigger);
+	}
+	
+}
+
+
+// Signature method for the OnComponentBeginOverlap event
+void AObjectiveMarker::ManageMarkerTrigger(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Collider detecting"));
+	if (bEnable && bIsFirstCheck)
+	{
+		bIsFirstCheck = false;
+		OnReachedToMarker.ExecuteIfBound();
+
+		if (bDisabledOnReach)
+		{
+			EnableObjectiveMarker(false, false);
+			if (NextMarker)
+			{
+				NextMarker->EnableObjectiveMarker(true, false);
+			}
+		}
+	}
+}
+
+void AObjectiveMarker::EnableObjectiveMarker(bool bChangeEnable, bool bChangeDisabledOnReach)
+{
+	bEnable = bChangeEnable;
+	bDisabledOnReach = bChangeDisabledOnReach;
+	bIsFirstCheck = true;
 }
 
 // Called every frame
