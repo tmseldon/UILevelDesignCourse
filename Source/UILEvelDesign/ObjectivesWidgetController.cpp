@@ -21,3 +21,8 @@ void UObjectivesWidgetController::NativeConstruct()
 	}
 	
 }
+
+void UObjectivesWidgetController::TestingMethod()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Testing method Wiorking"));
+}

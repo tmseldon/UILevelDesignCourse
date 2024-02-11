@@ -17,11 +17,11 @@ class UILEVELDESIGN_API AExtendedHUD : public AHUD
 private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD Component", meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<class UUserWidget> ObjectivesScreen;
+	TSubclassOf<class UObjectivesWidgetController> ObjectivesScreen;
 
 	APlayerController* CharacterController;
 
-	class UUserWidget* WidgetSpawned;
+	class UObjectivesWidgetController* WidgetSpawnedExtended;
 
 protected:
 	// Called when the game starts or when spawned

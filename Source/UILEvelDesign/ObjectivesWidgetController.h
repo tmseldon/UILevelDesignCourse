@@ -26,6 +26,8 @@ protected:
 	class UMultiLineEditableText* NarrativeMessage;
 
 private:
-
 	void NativeConstruct() override;
+
+public:
+	void TestingMethod();
 };

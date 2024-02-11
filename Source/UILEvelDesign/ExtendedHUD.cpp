@@ -3,6 +3,7 @@
 
 #include "ExtendedHUD.h"
 #include "Blueprint/UserWidget.h"
+#include "ObjectivesWidgetController.h"
 
 // Called when the game starts or when spawned
 void AExtendedHUD::BeginPlay()
@@ -16,10 +17,12 @@ void AExtendedHUD::BeginPlay()
 		return;
 	}
 
-	WidgetSpawned = CreateWidget(CharacterController, ObjectivesScreen, FName(TEXT("ObjectivesDisplay")));
+	UUserWidget* WidgetSpawned = CreateWidget(CharacterController, TSubclassOf<class UUserWidget>(ObjectivesScreen), FName(TEXT("ObjectivesDisplay")));
 
 	if (WidgetSpawned != nullptr)
 	{
-		WidgetSpawned->AddToViewport();
+		WidgetSpawnedExtended = Cast<class UObjectivesWidgetController>(WidgetSpawned);
+		WidgetSpawnedExtended->AddToViewport();
+		WidgetSpawnedExtended->TestingMethod();
 	}
 }
