@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/MultiLineEditableText.h"
 #include "ObjectivesWidgetController.generated.h"
 
 /**
@@ -25,8 +24,33 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UMultiLineEditableText* NarrativeMessage;
 
+	// Transient means that: Property is transient, meaning it will not be saved or loaded. 
+	// Properties tagged this way will be zero-filled at load time.
+	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidgetAnim))
+	class UWidgetAnimation* NarrativeFadeAnim;
+
 private:
-	void NativeConstruct() override;
+	// Pointers list of the Objective Text lines
+	TArray<UMultiLineEditableText*> ListOfObjectivesLines;
+
+	// Reference to HUD for listening to events
+	class AExtendedHUD* HudReference;
+
+	void NativeOnInitialized() override;
+
+	//void NativeConstruct() override;
+
+	void OnDisplayNarrative(bool bShow, FText NewText, float Duration);
+
+	// This method will double check if we have a valid reference for the Objective Lines in the HUD and return
+	// the pointer of the UI element if this exists
+	UMultiLineEditableText* GetObjectiveLinePointer(int IndexNumber) const;
+
+	// Methods for set and change information on the HUD
+
+	void SetObjectiveStatus(FText ObjectivePhrase, int ObjectiveIndex, bool bIsObjectiveComplete = false);
+	void SetStyleObjective(UMultiLineEditableText* Objective, bool bIsComplete = false);
+	void ClearObjectives();
 
 public:
 	void TestingMethod();

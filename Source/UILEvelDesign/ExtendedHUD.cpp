@@ -12,7 +12,7 @@ void AExtendedHUD::BeginPlay()
 
 	CharacterController = this->GetOwningPlayerController();
 
-	if (ObjectivesScreen == nullptr)
+	if (ObjectivesScreen == nullptr || CharacterController == nullptr)
 	{
 		return;
 	}
@@ -22,7 +22,10 @@ void AExtendedHUD::BeginPlay()
 	if (WidgetSpawned != nullptr)
 	{
 		WidgetSpawnedExtended = Cast<class UObjectivesWidgetController>(WidgetSpawned);
-		WidgetSpawnedExtended->AddToViewport();
-		WidgetSpawnedExtended->TestingMethod();
+		if (WidgetSpawnedExtended != nullptr)
+		{
+			WidgetSpawnedExtended->AddToViewport();
+			WidgetSpawnedExtended->TestingMethod();
+		}
 	}
 }

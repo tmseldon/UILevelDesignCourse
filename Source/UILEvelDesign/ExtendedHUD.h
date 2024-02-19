@@ -9,6 +9,12 @@
 /**
  * 
  */
+// Example of stadard delegate implementation
+DECLARE_DELEGATE_ThreeParams(FOnDisplayNarrative, bool, FText, float);
+
+// Example of dynamic delegate implementation
+UDELEGATE(BlueprintCallable)
+DECLARE_DYNAMIC_DELEGATE_ThreeParams(FOnDisplayNarrativeTrigger, bool, bShow, FText, NewText, float, Duration);
 UCLASS()
 class UILEVELDESIGN_API AExtendedHUD : public AHUD
 {
@@ -26,5 +32,11 @@ private:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+public:
+	FOnDisplayNarrative OnStartDisplayNarrative;
+
+	UPROPERTY()
+	FOnDisplayNarrativeTrigger OnDisplayNarrativeTrigger;
 	
 };

@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ObjectiveMarker.generated.h"
 
+//NOTE: maybe for this one shpuld be Multicast DECLARE_MULTICAST_DELEGATE(FOnObjetiveMarkerReached);
 DECLARE_DELEGATE(FOnObjetiveMarkerReached);
 UCLASS()
 class UILEVELDESIGN_API AObjectiveMarker : public AActor
