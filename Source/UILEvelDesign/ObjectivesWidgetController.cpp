@@ -31,18 +31,44 @@ void UObjectivesWidgetController::NativeOnInitialized()
 	//	UE_LOG(LogTemp, Warning, TEXT("Got Hud reference %s"), *HudReference->GetName());
 	//}
 
-	SetObjectiveStatus(FText::FromString(TEXT("Working it seems")), 0);
-	SetObjectiveStatus(FText::FromString(TEXT("Working it seems numer 2")), 1);
+	// Testing setting the text for the objective lines
+	//SetObjectiveStatus(FText::FromString(TEXT("Working it seems")), 0);
+	//SetObjectiveStatus(FText::FromString(TEXT("Working it seems numer 2")), 1);
+
+	// Reset the Objectives Lines
+	for (int Index = 0; Index < ListOfObjectivesLines.Num(); ++Index)
+	{
+		ToggleObjective(Index, true, true);
+	}
 }
 
 void UObjectivesWidgetController::TestingMethod()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Testing method Wiorking"));
+	//OnDisplayNarrative(false, FText::GetEmpty(), 2);
+	OnDisplayNarrative(true, FText::FromString(TEXT("Changing the narrative")), 4);
 }
 
 void UObjectivesWidgetController::OnDisplayNarrative(bool bShow, FText NewText, float Duration)
 {
+	if (bShow)
+	{
+		NarrativeMessage->SetText(NewText);
+		PlayAnimationForward(NarrativeFadeAnim, 1.5f);
+		
+		FTimerDelegate TimerDelegate;
+		TimerDelegate.BindLambda([&]
+			{
+				PlayAnimationReverse(NarrativeFadeAnim, 1.5f);
+			});
 
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, Duration, false);
+	}
+	else
+	{
+		PlayAnimationReverse(NarrativeFadeAnim, 1.5f);
+	}
 }
 
 UMultiLineEditableText* UObjectivesWidgetController::GetObjectiveLinePointer(int IndexNumber) const
@@ -100,5 +126,29 @@ void UObjectivesWidgetController::ClearObjectives()
 	for (int Index = 0; Index < NumberObjectiveTexts; ++Index)
 	{
 		SetObjectiveStatus(FText::GetEmpty(), Index);
+	}
+}
+
+void UObjectivesWidgetController::ToggleObjective(int ObjectiveIndex, bool bHide, bool bClearOnHide)
+{
+	// Guard if ObjectiveIndex is not valid
+	if (ObjectiveIndex < 0 || ObjectiveIndex >= ListOfObjectivesLines.Num())
+	{
+		return;
+	}
+	
+	if (bHide && bClearOnHide)
+	{
+		ClearObjectives();
+		return;
+	}
+
+	if (bHide)
+	{
+		ListOfObjectivesLines[ObjectiveIndex]->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		ListOfObjectivesLines[ObjectiveIndex]->SetVisibility(ESlateVisibility::Visible);
 	}
 }
