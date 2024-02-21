@@ -26,6 +26,18 @@ void AExtendedHUD::BeginPlay()
 		{
 			WidgetSpawnedExtended->AddToViewport();
 			WidgetSpawnedExtended->TestingMethod();
+
+			OnDisplayNarrativeTrigger.ExecuteIfBound(true, FText::FromString(TEXT("Changing the narrative Event")), 4);
+
+			//FTimerDelegate TimerDelegate;
+			//TimerDelegate.BindLambda([&]
+			//	{
+			//		OnDisplayNarrativeTrigger.Execute(true, FText::FromString(TEXT("Changing the narrative Event")), 4);
+			//	});
+
+			//FTimerHandle TimerHandle;
+			//GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 3.0f, false);
+			
 		}
 	}
 }

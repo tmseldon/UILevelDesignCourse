@@ -36,11 +36,8 @@ private:
 	// Reference to HUD for listening to events
 	class AExtendedHUD* HudReference;
 
-	void NativeOnInitialized() override;
-
-	//void NativeConstruct() override;
-
-	void OnDisplayNarrative(bool bShow, FText NewText, float Duration);
+	virtual void NativeOnInitialized() override;
+	//virtual void NativeConstruct() override;
 
 	// This method will double check if we have a valid reference for the Objective Lines in the HUD and return
 	// the pointer of the UI element if this exists
@@ -48,6 +45,10 @@ private:
 
 	// Methods for set and change information on the HUD
 
+	UFUNCTION()
+	void OnDisplayNarrative(bool bShow, FText NewText, float Duration);
+
+	UFUNCTION()
 	void SetObjectiveStatus(FText ObjectivePhrase, int ObjectiveIndex, bool bIsObjectiveComplete = false);
 	void SetStyleObjective(UMultiLineEditableText* Objective, bool bIsComplete = false);
 	void ClearObjectives();

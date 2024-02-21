@@ -18,12 +18,14 @@ void UObjectivesWidgetController::NativeOnInitialized()
 	{
 		ListOfObjectivesLines.Emplace(ObjectiveText2);
 	}
-	if (NarrativeMessage != nullptr)
-	{
-		NarrativeMessage->SetText(FText::FromString(TEXT("HolAAAAaaaaaaaa !! Working it seems narrative")));
-	}
+	//if (NarrativeMessage != nullptr)
+	//{
+	//	OnDisplayNarrative(false, FText::GetEmpty(), 2);
+	//}
 
 	HudReference = Cast<AExtendedHUD>(GetOwningPlayer()->GetHUD());
+	HudReference->OnSetNewObjectiveText.BindDynamic(this, &UObjectivesWidgetController::SetObjectiveStatus);
+	HudReference->OnDisplayNarrativeTrigger.BindDynamic(this, &UObjectivesWidgetController::OnDisplayNarrative);
 
 	// Just for testing if we are getting the HUD reference
 	//if (HudReference)
@@ -46,11 +48,16 @@ void UObjectivesWidgetController::TestingMethod()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Testing method Wiorking"));
 	//OnDisplayNarrative(false, FText::GetEmpty(), 2);
-	OnDisplayNarrative(true, FText::FromString(TEXT("Changing the narrative")), 4);
+	//OnDisplayNarrative(true, FText::FromString(TEXT("Changing the narrative")), 4);
 }
 
 void UObjectivesWidgetController::OnDisplayNarrative(bool bShow, FText NewText, float Duration)
 {
+	if (NarrativeMessage == nullptr)
+	{
+		return;
+	}
+
 	if (bShow)
 	{
 		NarrativeMessage->SetText(NewText);
