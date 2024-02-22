@@ -50,6 +50,7 @@ private:
 
 	UFUNCTION()
 	void SetObjectiveStatus(FText ObjectivePhrase, int ObjectiveIndex, bool bIsObjectiveComplete = false);
+
 	void SetStyleObjective(UMultiLineEditableText* Objective, bool bIsComplete = false);
 	void ClearObjectives();
 	void ToggleObjective(int ObjectiveIndex, bool bHide, bool bClearOnHide);

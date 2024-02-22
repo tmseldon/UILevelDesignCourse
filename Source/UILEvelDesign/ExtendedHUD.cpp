@@ -10,6 +10,8 @@ void AExtendedHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ListTextProgression.Add(FText::FromString(TEXT("Find a way across the river")));
+
 	CharacterController = this->GetOwningPlayerController();
 
 	if (ObjectivesScreen == nullptr || CharacterController == nullptr)
@@ -27,17 +29,16 @@ void AExtendedHUD::BeginPlay()
 			WidgetSpawnedExtended->AddToViewport();
 			WidgetSpawnedExtended->TestingMethod();
 
-			OnDisplayNarrativeTrigger.ExecuteIfBound(true, FText::FromString(TEXT("Changing the narrative Event")), 4);
-
-			//FTimerDelegate TimerDelegate;
-			//TimerDelegate.BindLambda([&]
-			//	{
-			//		OnDisplayNarrativeTrigger.Execute(true, FText::FromString(TEXT("Changing the narrative Event")), 4);
-			//	});
-
-			//FTimerHandle TimerHandle;
-			//GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 3.0f, false);
+			OnDisplayNarrativeTrigger.ExecuteIfBound(true, FText::FromString(TEXT("Found myself on the sorroundings of the woods")), 4);
 			
+			FTimerDelegate TimerDelegate;
+			TimerDelegate.BindLambda([&]
+				{
+					OnSetNewObjectiveText.ExecuteIfBound(ListTextProgression[0], 0, false);
+				});
+
+			FTimerHandle TimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 2.5f, false);
 		}
 	}
 }

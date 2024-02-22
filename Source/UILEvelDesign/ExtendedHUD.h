@@ -10,12 +10,11 @@
  * 
  */
 // Example of stadard delegate implementation
-DECLARE_DELEGATE_ThreeParams(FOnDisplayNarrative, bool, FText, float);
+//DECLARE_DELEGATE_ThreeParams(FOnDisplayNarrative, bool, FText, float);
 
 // Dynamic delegate implementation for Narrative Box
 UDELEGATE(BlueprintCallable)
 DECLARE_DYNAMIC_DELEGATE_ThreeParams(FOnDisplayNarrativeTrigger, bool, bShow, FText, NewText, float, Duration);
-
 
 // Dynamic delegate implementation for SetObjective
 UDELEGATE(BlueprintCallable)
@@ -35,12 +34,14 @@ private:
 
 	class UObjectivesWidgetController* WidgetSpawnedExtended;
 
+	TArray<FText> ListTextProgression;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
-	FOnDisplayNarrative OnStartDisplayNarrative;
+	/*FOnDisplayNarrative OnStartDisplayNarrative;*/
 
 	UPROPERTY()
 	FOnDisplayNarrativeTrigger OnDisplayNarrativeTrigger;

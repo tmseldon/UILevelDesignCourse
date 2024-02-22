@@ -20,7 +20,7 @@ void UObjectivesWidgetController::NativeOnInitialized()
 	}
 	//if (NarrativeMessage != nullptr)
 	//{
-	//	OnDisplayNarrative(false, FText::GetEmpty(), 2);
+	//	OnDisplayNarrative(false, FText::GetEmpty(), 0);
 	//}
 
 	HudReference = Cast<AExtendedHUD>(GetOwningPlayer()->GetHUD());
@@ -106,6 +106,10 @@ void UObjectivesWidgetController::SetObjectiveStatus(FText ObjectivePhrase, int 
 
 	ObjectiveReference->SetText(ObjectivePhrase);
 	SetStyleObjective(ObjectiveReference, bIsObjectiveComplete);
+	if (!bIsObjectiveComplete)
+	{
+		ToggleObjective(ObjectiveIndex, false, false);
+	}
 }
 
 // Set Text Style based on if it is complete or not through bIsComplete

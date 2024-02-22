@@ -26,8 +26,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-private:
-	// Reference to HUD for listening to events
-	class AExtendedHUD* HudReference;
+//private:
+//	// Reference to HUD for listening to events
+//	class AExtendedHUD* HudReference;
 
 };
