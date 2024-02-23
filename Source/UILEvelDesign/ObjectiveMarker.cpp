@@ -102,3 +102,8 @@ void AObjectiveMarker::Tick(float DeltaTime)
 
 }
 
+bool AObjectiveMarker::GetEnabled() const
+{
+	return bEnable;
+}
+

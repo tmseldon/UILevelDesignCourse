@@ -2,15 +2,21 @@
 
 
 #include "ExtendedHUD.h"
-#include "Blueprint/UserWidget.h"
+#include "ObjectiveMarker.h"
 #include "ObjectivesWidgetController.h"
+#include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 // Called when the game starts or when spawned
 void AExtendedHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Setting all the phrases here
 	ListTextProgression.Add(FText::FromString(TEXT("Find a way across the river")));
+
+
+
 
 	CharacterController = this->GetOwningPlayerController();
 
@@ -41,4 +47,47 @@ void AExtendedHUD::BeginPlay()
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 2.5f, false);
 		}
 	}
+
+	UGameplayStatics::GetAllActorsOfClass(this, ObjectiveMarkerType, ListOfAllObjectiveMarkers);
+	/*UE_LOG(LogTemp, Warning, TEXT("The integer value is: %d"), ListOfAllObjectiveMarkers.Num());*/
+}
+
+void AExtendedHUD::DrawObjectiMarker()
+{
+	if (ListOfAllObjectiveMarkers.Num() == 0)
+	{
+		return;
+	}
+
+	AObjectiveMarker* ActiveMarkerToDraw;
+
+	// Getting the Marker reference that is active right now
+	for (AActor* Marker : ListOfAllObjectiveMarkers)
+	{
+		AObjectiveMarker* MarkerReference = Cast<AObjectiveMarker>(Marker);
+		if (MarkerReference != nullptr)
+		{
+			if (MarkerReference->GetEnabled())
+			{
+				ActiveMarkerToDraw = MarkerReference;
+				break;
+			}
+		}
+	}
+}
+
+void AExtendedHUD::DrawHUD()
+{
+	Super::DrawHUD();
+
+	FVector2D ViewPortSize;
+
+	if (GEngine && GEngine->GameViewport)
+	{
+		GEngine->GameViewport->GetViewportSize(ViewPortSize);
+	}
+
+	DrawTexture(ObjMarkerFull, 0, 0, ViewPortSize.X, ViewPortSize.Y, 0, 0, 1, 1);
+
+
 }

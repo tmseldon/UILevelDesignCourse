@@ -72,4 +72,6 @@ public:
 	FOnObjetiveMarkerReached OnReachedToMarker;
 
 	void EnableObjectiveMarker(bool bChangeEnable, bool bChangeDisabledOnReach);	
+
+	bool GetEnabled() const;
 };
