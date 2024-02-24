@@ -6,6 +6,31 @@
 #include "GameFramework/HUD.h"
 #include "ExtendedHUD.generated.h"
 
+/*
+This struct encapsulates almost all the data required to draw the objective marker
+*/
+USTRUCT()
+struct FDrawMarkerParams
+{
+	GENERATED_BODY();
+
+public:
+	float ScreenX;
+	float ScreenY;
+	float ScreenW = 250.f;
+	float ScreenH = 250.f;
+	float TextureU = 0;
+	float TextureV = 0;
+	float TextureUWidth = 1;
+	float TextureVHeight = 1;
+	FLinearColor TintColor = FLinearColor::White;
+	EBlendMode BlendMode = BLEND_Translucent;
+	float Scale = 0.125f;
+	bool bScalePosition = false;
+	float Rotation = 0.f;
+	FVector2D RotPivot = FVector2D(0.5f, 0.5f);
+};
+
 /**
  * 
  */
@@ -29,16 +54,27 @@ private:
 	// References for the player
 	APlayerController* CharacterController;
 
-	// References for the Objective Text and Narrative box Widget
+	/*
+	/ References for the Objective Text and Narrative box Widget
+	*/
 
 	class UObjectivesWidgetController* WidgetSpawnedExtended;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD Objective Components", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class UObjectivesWidgetController> ObjectivesScreen;
 
-	// Properties and references for the Objective Mark elements
+	/*
+	/ Properties and references for the Objective Mark elements
+	*/
+
+	FVector2D ViewPortSize;
+
+	FDrawMarkerParams MarkerParams;
 
 	TArray<class AActor*> ListOfAllObjectiveMarkers;
+
+	// List of phrases for the different objectives
+	TArray<FText> ListTextProgression;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD Marker Components", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class AObjectiveMarker> ObjectiveMarkerType;
@@ -49,10 +85,11 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD Marker Components", meta = (AllowPrivateAccess = "true"))
 	UTexture2D* ObjMarkerHalf;
 
-	void DrawObjectiMarker();
+	AObjectiveMarker* GetActiveObjectiveMarker() const;
 
-	// List of phrases for the different objectives
-	TArray<FText> ListTextProgression;
+	UTexture2D* GetMarkerTextureToDraw(FVector2D MarkerScreenPos, float& Rotation);
+
+	void DrawMarker(AObjectiveMarker* ActiveMarker);
 
 protected:
 	// Called when the game starts or when spawned
@@ -64,7 +101,9 @@ public:
 	// Example of standard delegate
 	/*FOnDisplayNarrative OnStartDisplayNarrative;*/
 
-	// Delegates for the different events related to the Objective lines and Narrative box
+	/*
+	/ Delegates for the different events related to the Objective lines and Narrative box
+	*/
 
 	UPROPERTY()
 	FOnDisplayNarrativeTrigger OnDisplayNarrativeTrigger;
