@@ -29,6 +29,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Transient, meta = (BindWidgetAnim))
 	class UWidgetAnimation* NarrativeFadeAnim;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnTesting();
+
 private:
 	// Pointers list of the Objective Text lines
 	TArray<UMultiLineEditableText*> ListOfObjectivesLines;
@@ -45,15 +48,17 @@ private:
 
 	// Methods for set and change information on the HUD
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void OnDisplayNarrative(bool bShow, FText NewText, float Duration);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SetObjectiveStatus(FText ObjectivePhrase, int ObjectiveIndex, bool bIsObjectiveComplete = false);
+
+	UFUNCTION(BlueprintCallable)
+	void ToggleObjective(int ObjectiveIndex, bool bHide, bool bClearOnHide);
 
 	void SetStyleObjective(UMultiLineEditableText* Objective, bool bIsComplete = false);
 	void ClearObjectives();
-	void ToggleObjective(int ObjectiveIndex, bool bHide, bool bClearOnHide);
 
 public:
 	void TestingMethod();

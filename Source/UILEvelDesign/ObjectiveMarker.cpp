@@ -36,6 +36,29 @@ void AObjectiveMarker::OnConstruction(const FTransform& Transform)
 	ToogleBoxCollider(bUseTrigger);
 }
 
+// Called every frame
+void AObjectiveMarker::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
+// Called when the game starts or when spawned
+void AObjectiveMarker::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (BoxCollider != nullptr)
+	{
+		BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AObjectiveMarker::ManageMarkerTrigger);
+	}
+	
+}
+
+bool AObjectiveMarker::GetEnabled() const
+{
+	return bEnable;
+}
 
 // Helper method to toogle or not the box collider for the marker
 void AObjectiveMarker::ToogleBoxCollider(bool bIsActive)
@@ -54,19 +77,6 @@ void AObjectiveMarker::ToogleBoxCollider(bool bIsActive)
 		BoxCollider->SetCollisionProfileName(FName(TEXT("NoCollision")));
 	}
 }
-
-// Called when the game starts or when spawned
-void AObjectiveMarker::BeginPlay()
-{
-	Super::BeginPlay();
-	
-	if (BoxCollider != nullptr)
-	{
-		BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AObjectiveMarker::ManageMarkerTrigger);
-	}
-	
-}
-
 
 // Signature method for the OnComponentBeginOverlap event
 void AObjectiveMarker::ManageMarkerTrigger(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -94,16 +104,3 @@ void AObjectiveMarker::EnableObjectiveMarker(bool bChangeEnable, bool bChangeDis
 	bDisabledOnReach = bChangeDisabledOnReach;
 	bIsFirstCheck = true;
 }
-
-// Called every frame
-void AObjectiveMarker::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-bool AObjectiveMarker::GetEnabled() const
-{
-	return bEnable;
-}
-

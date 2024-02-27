@@ -85,7 +85,11 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD Marker Components", meta = (AllowPrivateAccess = "true"))
 	UTexture2D* ObjMarkerHalf;
 
+	UFUNCTION(BlueprintCallable)
 	AObjectiveMarker* GetActiveObjectiveMarker() const;
+
+	UFUNCTION(BlueprintCallable)
+	UObjectivesWidgetController* GetWidgetObjectiveController() const;
 
 	UTexture2D* GetMarkerTextureToDraw(FVector2D MarkerScreenPos, float& Rotation);
 
@@ -105,10 +109,11 @@ public:
 	/ Delegates for the different events related to the Objective lines and Narrative box
 	*/
 
-	UPROPERTY()
 	FOnDisplayNarrativeTrigger OnDisplayNarrativeTrigger;
 
-	UPROPERTY()
 	FOnSetNewObjectiveText OnSetNewObjectiveText;
+
+	//UFUNCTION(BlueprintCallable)
+	//void OnDisplayNarrativeBoxEvent();
 	
 };

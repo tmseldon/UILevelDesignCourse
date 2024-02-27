@@ -175,3 +175,14 @@ UTexture2D* AExtendedHUD::GetMarkerTextureToDraw(FVector2D MarkerScreenPos, floa
 
 	return TextureToDraw;
 }
+
+UObjectivesWidgetController* AExtendedHUD::GetWidgetObjectiveController() const
+{
+	return WidgetSpawnedExtended;
+}
+
+
+//void AExtendedHUD::OnDisplayNarrativeBoxEvent()
+//{
+//	OnDisplayNarrativeTrigger.ExecuteIfBound();
+//}

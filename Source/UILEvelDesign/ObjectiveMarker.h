@@ -6,8 +6,12 @@
 #include "GameFramework/Actor.h"
 #include "ObjectiveMarker.generated.h"
 
-//NOTE: maybe for this one shpuld be Multicast DECLARE_MULTICAST_DELEGATE(FOnObjetiveMarkerReached);
-DECLARE_DELEGATE(FOnObjetiveMarkerReached);
+//0. [Testing] this is the implementation of standard delegate
+//DECLARE_DELEGATE(FOnObjetiveMarkerReached);
+//1. [Testing] this is the implementation of Unreal's multicast delegate
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnObjetiveMarkerReached);
+DECLARE_DYNAMIC_DELEGATE(FOnObjetiveMarkerReached);
+
 UCLASS()
 class UILEVELDESIGN_API AObjectiveMarker : public AActor
 {
@@ -52,9 +56,10 @@ private:
 
 	void OnConstruction(const FTransform& Transform) override;
 
+	UFUNCTION(BlueprintCallable)
 	void ToogleBoxCollider(bool bIsActive);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void ManageMarkerTrigger(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 protected:
@@ -62,16 +67,19 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+	// Delegate for the event when player reaches the marker
+	//1. [Testing] this is the implementation of Unreal's Multicast delegate
+	//UPROPERTY(BlueprintAssignable)
+	UPROPERTY()
+	FOnObjetiveMarkerReached OnReachedToMarker;
+
 	// Sets default values for this actor's properties
 	AObjectiveMarker();
+
+	bool GetEnabled() const;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Delegate for the event when player reaches the marker
-	FOnObjetiveMarkerReached OnReachedToMarker;
-
 	void EnableObjectiveMarker(bool bChangeEnable, bool bChangeDisabledOnReach);	
-
-	bool GetEnabled() const;
 };
